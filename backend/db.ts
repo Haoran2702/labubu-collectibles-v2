@@ -43,6 +43,7 @@ export async function initDb() {
       sku TEXT UNIQUE,
       weight REAL,
       dimensions TEXT,
+      collection TEXT,
       createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
       updatedAt TEXT DEFAULT CURRENT_TIMESTAMP
     );
