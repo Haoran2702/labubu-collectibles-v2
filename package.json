@@ -6,8 +6,8 @@
     "dev:restart": "./scripts/dev-restart.sh",
     "dev:backend": "cd backend && npm run build && NODE_ENV=development node dist/bin/www.js",
     "dev:frontend": "cd frontend && npm run dev",
-    "build": "cd backend && npm run build && cd ../frontend && npm run build",
-    "start": "cd backend && NODE_ENV=production node dist/bin/www.js"
+    "build:all": "cd backend && npm run build && cd ../frontend && npm run build",
+    "start:backend": "cd backend && NODE_ENV=production node dist/bin/www.js"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
