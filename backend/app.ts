@@ -58,7 +58,9 @@ app.use(morgan('combined', {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve static assets from the source public directory (works in dist builds)
+app.use(express.static(path.resolve(__dirname, '../public')));
+app.use('/product_images', express.static(path.resolve(__dirname, '../public/product_images')));
 
 // Apply rate limiting to all routes
 app.use(limiter);

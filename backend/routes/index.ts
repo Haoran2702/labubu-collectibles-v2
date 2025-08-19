@@ -19,30 +19,7 @@ router.get('/health', (req: Request, res: Response) => {
   });
 });
 
-// Serve product images
-router.get('/product_images/:filename', expressAsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const { filename } = req.params;
-  const imagePath = path.join(__dirname, '../public/product_images', filename);
-  
-  // Check if file exists
-  if (!fs.existsSync(imagePath)) {
-    return next(new AppError('Image not found', 404));
-  }
-  
-  // Set appropriate content type based on file extension
-  const ext = path.extname(filename).toLowerCase();
-  const contentType = {
-    '.png': 'image/png',
-    '.jpg': 'image/jpeg',
-    '.jpeg': 'image/jpeg',
-    '.gif': 'image/gif',
-    '.webp': 'image/webp'
-  }[ext] || 'application/octet-stream';
-  
-  res.setHeader('Content-Type', contentType);
-  res.setHeader('Cache-Control', 'public, max-age=31536000'); // Cache for 1 year
-  res.sendFile(imagePath);
-}));
+// Note: static serving for /product_images is handled in app.ts via express.static
 
 router.post('/email-signup', expressAsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { email } = req.body;
