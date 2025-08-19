@@ -11,3 +11,4 @@ restartPolicyMaxRetries = 10
 [[services]]
 name = "labubu-backend"
 sourceDir = "backend"
+healthcheckPath = "/api/health"
