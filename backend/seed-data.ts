@@ -1,4 +1,4 @@
-import { openDb } from './db';
+import { openDb, initDb } from './db';
 
 const products = [
   // Have a Seat
@@ -31,6 +31,9 @@ const products = [
 ];
 
 async function seed() {
+  console.log('Initializing database...');
+  await initDb();
+  console.log('Database initialized, now seeding products...');
   const db = await openDb();
   await db.run('DELETE FROM products');
   for (const product of products) {
