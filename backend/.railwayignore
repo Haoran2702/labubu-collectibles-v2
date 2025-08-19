@@ -1,0 +1,23 @@
+# Ignore cache files
+node_modules/.cache/
+.npm/
+*.log
+
+# Ignore development files
+.env.local
+.env.development
+.env.test
+
+# Ignore build artifacts
+dist/
+build/
+
+# Ignore git files
+.git/
+.gitignore
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
