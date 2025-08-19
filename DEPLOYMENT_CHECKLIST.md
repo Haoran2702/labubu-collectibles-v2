@@ -14,7 +14,10 @@
 - [x] Added health check endpoint
 - [x] Created Railway configuration
 - [x] Updated package.json with production scripts
-- [ ] **TODO**: Fix remaining hardcoded localhost in 25+ frontend files (can be done incrementally)
+- [x] **COMPLETED**: Fixed hardcoded localhost in 20+ critical frontend files
+- [x] **COMPLETED**: Updated all API routes to use environment variables
+- [x] **COMPLETED**: Fixed authentication, checkout, orders, and admin pages
+- [ ] **TODO**: Fix remaining hardcoded localhost in 5+ admin pages (can be done incrementally)
 
 ### Database & Security
 - [ ] Set up production SQLite database
@@ -23,14 +26,14 @@
 - [ ] Configure JWT_SECRET for production
 - [ ] Set up environment-specific configurations
 
-## 🔄 Phase 2: Platform Setup (READY TO START)
+## ✅ Phase 2: Platform Setup (COMPLETED)
 
 ### Railway Setup
-- [ ] Create Railway account
-- [ ] Connect GitHub repository
-- [ ] Set up environment variables in Railway dashboard
-- [ ] Configure domain (labubu-collectibles.com)
-- [ ] Set up SSL certificate
+- [x] Create Railway account
+- [x] Connect GitHub repository
+- [x] Set up environment variables in Railway dashboard
+- [x] Configure domain (labubu-collectibles.com)
+- [x] Set up SSL certificate
 
 ### Deployment Files Created
 - [x] Created `railway.toml` for backend configuration
@@ -71,7 +74,7 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 NODE_ENV=production
 ```
 
-## 🚀 Phase 3: Deployment
+## 🚀 Phase 3: Deployment (READY TO START)
 
 ### Backend Deployment
 - [ ] Deploy backend to Railway
