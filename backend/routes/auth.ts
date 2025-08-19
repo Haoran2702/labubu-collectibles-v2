@@ -533,7 +533,7 @@ router.post(
     body('email').isEmail().withMessage('Valid email is required'),
     handleValidationErrors
   ],
-  expressAsyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  expressAsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { email } = req.body;
   if (!email) {
     return next(new BadRequestError('Email is required'));
@@ -558,7 +558,7 @@ router.post(
 }));
 
 // Reset password
-router.post('/reset-password', expressAsyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+router.post('/reset-password', expressAsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { email, token, newPassword } = req.body;
   if (!email || !token || !newPassword) {
     return next(new BadRequestError('All fields are required'));
