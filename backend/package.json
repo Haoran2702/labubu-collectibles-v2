@@ -1,11 +1,12 @@
 {
   "name": "backend",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "build": "tsc",
     "dev": "ts-node app.ts",
     "start": "NODE_ENV=production node ./dist/bin/www.js",
+    "postinstall": "npm run build"
     "seed": "ts-node seed-data.ts",
     "test": "node tests/setupTestDB.js && jest --runInBand",
     "backup": "node scripts/backup.js backup",
