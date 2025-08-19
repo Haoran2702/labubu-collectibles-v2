@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+:root {
+  --background: #F7F7F7;
+  --foreground: #222831;
+  --accent: #FFD369;
+  --secondary: #393E46;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Card/Panel Styles */
+.card {
+  @apply rounded-xl shadow-sm bg-white border border-gray-200 p-4;
+}
+
+/* Button Styles */
+.btn {
+  @apply px-4 py-2 rounded font-medium transition-colors focus:outline-none;
+}
+.btn-primary {
+  @apply bg-black text-white hover:bg-gray-800;
+}
+.btn-secondary {
+  @apply bg-gray-200 text-black hover:bg-gray-300;
+}
+.btn-danger {
+  @apply bg-red-500 text-white hover:bg-red-600;
+}
+
+/* Nav Bar */
+.admin-nav {
+  @apply sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-gray-200;
+}
+
+/* Table/List Enhancements */
+.admin-list-row:nth-child(even) {
+  @apply bg-gray-50;
+}
+
+/* Toast/Notification */
+.toast {
+  @apply fixed top-6 right-6 bg-black text-white px-4 py-2 rounded shadow-lg z-50 animate-fadein;
+}
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadein {
+  animation: fadein 0.3s ease;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 640px) {
+  .admin-nav, .card, .btn { @apply text-sm; }
+  .admin-nav { @apply flex-col gap-2; }
+}
+
+/* Currency Dropdown Enhancements */
+.currency-dropdown {
+  max-height: 70vh !important;
+  overflow-y: auto !important;
+}
+
+.currency-dropdown .currency-list {
+  max-height: 60vh !important;
+  overflow-y: auto !important;
+}
