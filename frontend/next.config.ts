@@ -35,6 +35,10 @@ const nextConfig: NextConfig = {
         destination: `${apiUrl}/product_images/:path*`,
       },
       {
+        source: '/placeholder-product.svg',
+        destination: `${apiUrl}/product_images/placeholder-product.svg`,
+      },
+      {
         source: '/api/orders/:path*',
         destination: `${apiUrl}/api/orders/:path*`,
       },
