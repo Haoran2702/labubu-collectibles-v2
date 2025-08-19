@@ -1,4 +1,4 @@
-# Labubu Collectibles - Premium Collectibles E-commerce Platform
+# Labubu Collectibles v2 - Premium Collectibles E-commerce Platform
 
 A modern, full-stack e-commerce platform specializing in Labubu collectibles and exclusive editions. Built with Next.js 15, TypeScript, Tailwind CSS, and Node.js/Express, featuring comprehensive admin tools, analytics, marketing automation, and a seamless shopping experience.
 
