@@ -6,7 +6,7 @@
     "build": "tsc",
     "dev": "ts-node app.ts",
     "start": "NODE_ENV=production node ./dist/bin/www.js",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
     "seed": "ts-node seed-data.ts",
     "test": "node tests/setupTestDB.js && jest --runInBand",
     "backup": "node scripts/backup.js backup",
@@ -14,8 +14,7 @@
     "backup:restore": "node scripts/backup.js restore",
     "backup:cleanup": "node scripts/backup.js cleanup",
     "health:check": "node scripts/health-check.js check",
-    "health:monitor": "node scripts/health-check.js monitor",
-    "postinstall": "npm run build"
+    "health:monitor": "node scripts/health-check.js monitor"
   },
   "dependencies": {
     "@types/handlebars": "^4.0.40",
