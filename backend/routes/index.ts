@@ -20,13 +20,13 @@ router.get('/health', (req: Request, res: Response) => {
 });
 
 // Serve product images
-router.get('/product_images/:filename', (req: Request, res: Response) => {
+router.get('/product_images/:filename', expressAsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { filename } = req.params;
   const imagePath = path.join(__dirname, '../public/product_images', filename);
   
   // Check if file exists
   if (!fs.existsSync(imagePath)) {
-    return res.status(404).json({ error: 'Image not found' });
+    return next(new AppError('Image not found', 404));
   }
   
   // Set appropriate content type based on file extension
@@ -42,7 +42,7 @@ router.get('/product_images/:filename', (req: Request, res: Response) => {
   res.setHeader('Content-Type', contentType);
   res.setHeader('Cache-Control', 'public, max-age=31536000'); // Cache for 1 year
   res.sendFile(imagePath);
-});
+}));
 
 router.post('/email-signup', expressAsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { email } = req.body;
