@@ -113,6 +113,7 @@
   "include": [
     "./app.ts",
     "./bin/**/*.ts",
-    "./routes/**/*.ts"
+    "./routes/**/*.ts",
+    "./utils/**/*.ts"
   ]
 }

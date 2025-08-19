@@ -59,3 +59,9 @@ typings/
 
 # next.js build output
 .next
+
+# Database backups and logs
+backups/
+logs/
+*.sqlite.backup
+temp-restore-*.sqlite

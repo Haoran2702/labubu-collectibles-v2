@@ -12,6 +12,8 @@ import {
   getPasswordResetTemplate, 
   getWelcomeEmailTemplate,
   getPasswordChangedTemplate,
+  getOrderConfirmationTemplate,
+  getOrderStatusUpdateTemplate,
   sendEmail 
 } from '../utils/emailTemplates';
 
@@ -77,7 +79,12 @@ router.post(
   authLimiter,
   [
     body('email').isEmail().withMessage('Valid email is required'),
-    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+    body('password')
+      .isLength({ min: 8 }).withMessage('Password must be at least 8 characters')
+      .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter')
+      .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
+      .matches(/\d/).withMessage('Password must contain at least one number')
+      .matches(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/).withMessage('Password must contain at least one special character'),
     body('firstName').notEmpty().withMessage('First name is required'),
     body('lastName').notEmpty().withMessage('Last name is required'),
     handleValidationErrors
@@ -90,8 +97,21 @@ router.post(
       return next(new BadRequestError('All fields are required'));
     }
 
-    if (password.length < 6) {
-      return next(new BadRequestError('Password must be at least 6 characters'));
+    // Enhanced password validation
+    if (password.length < 8) {
+      return next(new BadRequestError('Password must be at least 8 characters'));
+    }
+    if (!/[a-z]/.test(password)) {
+      return next(new BadRequestError('Password must contain at least one lowercase letter'));
+    }
+    if (!/[A-Z]/.test(password)) {
+      return next(new BadRequestError('Password must contain at least one uppercase letter'));
+    }
+    if (!/\d/.test(password)) {
+      return next(new BadRequestError('Password must contain at least one number'));
+    }
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+      return next(new BadRequestError('Password must contain at least one special character'));
     }
 
     const db = await openDb();
@@ -364,8 +384,21 @@ router.put('/change-password', authenticateToken, expressAsyncHandler(async (req
     return next(new BadRequestError('Current and new password are required'));
   }
 
-  if (newPassword.length < 6) {
-    return next(new BadRequestError('New password must be at least 6 characters'));
+  // Enhanced password validation for password change
+  if (newPassword.length < 8) {
+    return next(new BadRequestError('New password must be at least 8 characters'));
+  }
+  if (!/[a-z]/.test(newPassword)) {
+    return next(new BadRequestError('New password must contain at least one lowercase letter'));
+  }
+  if (!/[A-Z]/.test(newPassword)) {
+    return next(new BadRequestError('New password must contain at least one uppercase letter'));
+  }
+  if (!/\d/.test(newPassword)) {
+    return next(new BadRequestError('New password must contain at least one number'));
+  }
+  if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(newPassword)) {
+    return next(new BadRequestError('New password must contain at least one special character'));
   }
 
   const db = await openDb();
@@ -530,8 +563,21 @@ router.post('/reset-password', expressAsyncHandler(async (req: Request, res: Res
   if (!email || !token || !newPassword) {
     return next(new BadRequestError('All fields are required'));
   }
-  if (newPassword.length < 6) {
-    return next(new BadRequestError('Password must be at least 6 characters'));
+  // Enhanced password validation for password reset
+  if (newPassword.length < 8) {
+    return next(new BadRequestError('Password must be at least 8 characters'));
+  }
+  if (!/[a-z]/.test(newPassword)) {
+    return next(new BadRequestError('Password must contain at least one lowercase letter'));
+  }
+  if (!/[A-Z]/.test(newPassword)) {
+    return next(new BadRequestError('Password must contain at least one uppercase letter'));
+  }
+  if (!/\d/.test(newPassword)) {
+    return next(new BadRequestError('Password must contain at least one number'));
+  }
+  if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(newPassword)) {
+    return next(new BadRequestError('Password must contain at least one special character'));
   }
   const db = await openDb();
   const user = await db.get('SELECT * FROM users WHERE email = ?', [email]);
@@ -548,5 +594,7 @@ router.post('/reset-password', expressAsyncHandler(async (req: Request, res: Res
   await db.close();
   res.json({ message: 'Password has been reset successfully.' });
 }));
+
+
 
 export default router; 

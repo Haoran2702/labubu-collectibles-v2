@@ -99,6 +99,45 @@ export async function initDb() {
       updatedAt TEXT DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
     );
+    
+    CREATE TABLE IF NOT EXISTS stock_reservations (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      productId INTEGER NOT NULL,
+      quantity INTEGER NOT NULL,
+      sessionId TEXT NOT NULL,
+      expiresAt TEXT NOT NULL,
+      createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (productId) REFERENCES products(id) ON DELETE CASCADE
+    );
+    
+    CREATE TABLE IF NOT EXISTS stock_movements (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      productId INTEGER NOT NULL,
+      quantity INTEGER NOT NULL,
+      movementType TEXT NOT NULL,
+      reason TEXT,
+      orderId TEXT,
+      userId INTEGER,
+      previousStock INTEGER NOT NULL,
+      newStock INTEGER NOT NULL,
+      createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (productId) REFERENCES products(id) ON DELETE CASCADE,
+      FOREIGN KEY (orderId) REFERENCES orders(id) ON DELETE SET NULL,
+      FOREIGN KEY (userId) REFERENCES users(id) ON DELETE SET NULL
+    );
+    
+    CREATE TABLE IF NOT EXISTS inventory_forecasts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      productId INTEGER NOT NULL,
+      forecastDate TEXT NOT NULL,
+      predictedDemand INTEGER NOT NULL,
+      confidenceLevel REAL NOT NULL,
+      forecastType TEXT NOT NULL,
+      algorithm TEXT NOT NULL,
+      historicalDataPoints INTEGER NOT NULL,
+      createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (productId) REFERENCES products(id) ON DELETE CASCADE
+    );
   `);
   try {
     await db.exec(`

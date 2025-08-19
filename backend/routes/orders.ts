@@ -4,6 +4,7 @@ import { openDb } from '../db';
 import { v4 as uuidv4 } from 'uuid';
 import { BadRequestError, UnauthorizedError, ForbiddenError, NotFoundError, AppError } from '../errors';
 import { body, validationResult } from 'express-validator';
+import { getOrderConfirmationTemplate, getOrderStatusUpdateTemplate, sendEmail } from '../utils/emailTemplates';
 
 // Extend Request interface to include user
 interface AuthenticatedRequest extends Request {
@@ -34,7 +35,7 @@ const VALID_STATUS_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
   [OrderStatus.PROCESSING]: [OrderStatus.SHIPPED, OrderStatus.CANCELLED], // Keep for backward compatibility
   [OrderStatus.SHIPPED]: [OrderStatus.DELIVERED, OrderStatus.CANCELLED],
   [OrderStatus.DELIVERED]: [OrderStatus.RETURN_REQUESTED], // Customers can request returns after delivery
-  [OrderStatus.CANCELLED]: [],
+  [OrderStatus.CANCELLED]: [OrderStatus.REFUNDED], // Cancelled orders can be refunded if they have payment
   [OrderStatus.REFUNDED]: [],
   [OrderStatus.RETURNED]: [OrderStatus.REFUNDED],
   [OrderStatus.RETURN_REQUESTED]: [OrderStatus.RETURNED, OrderStatus.CANCELLED]
@@ -87,22 +88,38 @@ async function addStatusHistory(db: any, orderId: string, status: string, reason
 }
 
 // Helper function to send order notifications
-async function sendOrderNotification(orderId: string, status: string, userEmail: string) {
-  // In a real implementation, this would integrate with email service
-  console.log(`Order notification: Order ${orderId} status changed to ${status} for ${userEmail}`);
-  
-  const db = await openDb();
-  const notifications = await db.get('SELECT notification_sent FROM orders WHERE id = ?', [orderId]);
-  const sentNotifications = JSON.parse(notifications?.notification_sent || '[]');
-  sentNotifications.push({
-    status,
-    sentAt: new Date().toISOString(),
-    type: 'email'
-  });
-  
-  await db.run('UPDATE orders SET notification_sent = ? WHERE id = ?', 
-    [JSON.stringify(sentNotifications), orderId]);
-  await db.close();
+async function sendOrderNotification(orderId: string, status: string, userEmail: string, customerName?: string, trackingNumber?: string) {
+  try {
+    const db = await openDb();
+    
+    // Get order details for email
+    const order = await db.get('SELECT * FROM orders WHERE id = ?', [orderId]);
+    const user = await db.get('SELECT firstName FROM users WHERE email = ?', [userEmail]);
+    
+    const customerNameForEmail = customerName || user?.firstName || userEmail.split('@')[0];
+    
+    // Send status update email
+    const html = getOrderStatusUpdateTemplate(orderId, status, customerNameForEmail, trackingNumber);
+    await sendEmail(userEmail, `Order ${orderId} Status Update - ${status.charAt(0).toUpperCase() + status.slice(1)}`, html);
+    
+    // Update notification tracking
+    const notifications = await db.get('SELECT notification_sent FROM orders WHERE id = ?', [orderId]);
+    const sentNotifications = JSON.parse(notifications?.notification_sent || '[]');
+    sentNotifications.push({
+      status,
+      sentAt: new Date().toISOString(),
+      type: 'email'
+    });
+    
+    await db.run('UPDATE orders SET notification_sent = ? WHERE id = ?', 
+      [JSON.stringify(sentNotifications), orderId]);
+    await db.close();
+    
+    console.log(`Order notification email sent: Order ${orderId} status changed to ${status} for ${userEmail}`);
+  } catch (error) {
+    console.error('Failed to send order notification email:', error);
+    // Don't fail the order update if email fails
+  }
 }
 
 // Create a new order (requires authentication)
@@ -143,7 +160,26 @@ router.post(
     // Add initial status history
     await addStatusHistory(db, orderId, OrderStatus.PENDING, 'Order created', req.user!.email);
     
+    // Get user details for email
+    const user = await db.get('SELECT firstName, email FROM users WHERE id = ?', [userId]);
     await db.close();
+    
+    // Send order confirmation email
+    try {
+      const orderDetails = {
+        id: orderId,
+        total,
+        shippingInfo,
+        orderDate,
+        status: OrderStatus.PENDING,
+        items
+      };
+      const html = getOrderConfirmationTemplate(orderId, orderDetails, user.firstName);
+      await sendEmail(user.email, 'Order Confirmation - Labubu Collectibles', html);
+    } catch (error) {
+      console.error('Failed to send order confirmation email:', error);
+      // Don't fail order creation if email fails
+    }
     
     // Send initial notification
     await sendOrderNotification(orderId, OrderStatus.PENDING, req.user!.email);
@@ -740,6 +776,154 @@ router.get('/admin/stats', authenticateToken, expressAsyncHandler(async (req: Au
     recentOrders: recentOrders[0].count,
     totalRevenue: totalRevenue.total || 0
   });
+}));
+
+// Generate and download invoice (admin only)
+router.get('/:id/invoice', authenticateToken, expressAsyncHandler(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  
+  // Check if user is admin
+  if (req.user!.role !== 'admin') {
+    return next(new ForbiddenError('Admin access required'));
+  }
+  
+  const db = await openDb();
+  
+  // Get order details with customer and items info
+  const order = await db.get(`
+    SELECT o.*, u.firstName, u.lastName, u.email 
+    FROM orders o 
+    LEFT JOIN users u ON o.userId = u.id 
+    WHERE o.id = ?
+  `, [id]);
+  
+  if (!order) {
+    await db.close();
+    return next(new NotFoundError('Order not found'));
+  }
+  
+  // Get order items with product info
+  const items = await db.all(`
+    SELECT oi.productId, oi.quantity, oi.price, p.name, p.collection
+    FROM order_items oi
+    LEFT JOIN products p ON oi.productId = p.id
+    WHERE oi.orderId = ?
+  `, [id]);
+  
+  await db.close();
+  
+  // Prepare invoice data
+  const shippingInfo = JSON.parse(order.shipping_info);
+  const invoiceData = {
+    orderId: order.id,
+    orderDate: order.order_date,
+    customerName: `${order.firstName} ${order.lastName}`,
+    customerEmail: order.email,
+    shippingAddress: {
+      name: shippingInfo.name,
+      address: shippingInfo.address,
+      city: shippingInfo.city,
+      state: shippingInfo.state,
+      zip: shippingInfo.zip,
+      country: shippingInfo.country
+    },
+    items: items.map((item: any) => ({
+      name: item.name ? `${item.collection} - ${item.name}` : `Product #${item.productId}`,
+      quantity: item.quantity,
+      price: item.price,
+      total: item.quantity * item.price
+    })),
+    subtotal: order.total,
+    tax: 0, // Calculate tax if needed
+    shipping: 0, // Calculate shipping if needed
+    total: order.total,
+    paymentStatus: order.payment_status || 'pending',
+    paymentMethod: order.payment_intent_id ? 'Credit Card' : 'PayPal'
+  };
+  
+  try {
+    const { generateInvoiceBuffer } = require('../utils/pdfGenerator');
+    const pdfBuffer = await generateInvoiceBuffer(invoiceData);
+    
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="invoice-${order.id}.pdf"`);
+    res.setHeader('Content-Length', pdfBuffer.length);
+    res.send(pdfBuffer);
+  } catch (error) {
+    console.error('Error generating invoice:', error);
+    return next(new AppError('Failed to generate invoice', 500));
+  }
+}));
+
+// Generate and download shipping label (admin only)
+router.get('/:id/shipping-label', authenticateToken, expressAsyncHandler(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  
+  // Check if user is admin
+  if (req.user!.role !== 'admin') {
+    return next(new ForbiddenError('Admin access required'));
+  }
+  
+  const db = await openDb();
+  
+  // Get order details with customer info
+  const order = await db.get(`
+    SELECT o.*, u.firstName, u.lastName 
+    FROM orders o 
+    LEFT JOIN users u ON o.userId = u.id 
+    WHERE o.id = ?
+  `, [id]);
+  
+  if (!order) {
+    await db.close();
+    return next(new NotFoundError('Order not found'));
+  }
+  
+  // Get order items with product info
+  const items = await db.all(`
+    SELECT oi.productId, oi.quantity, p.name, p.collection
+    FROM order_items oi
+    LEFT JOIN products p ON oi.productId = p.id
+    WHERE oi.orderId = ?
+  `, [id]);
+  
+  await db.close();
+  
+  // Prepare shipping label data
+  const shippingInfo = JSON.parse(order.shipping_info);
+  const shippingLabelData = {
+    orderId: order.id,
+    customerName: `${order.firstName} ${order.lastName}`,
+    shippingAddress: {
+      name: shippingInfo.name,
+      address: shippingInfo.address,
+      city: shippingInfo.city,
+      state: shippingInfo.state,
+      zip: shippingInfo.zip,
+      country: shippingInfo.country
+    },
+    items: items.map((item: any) => ({
+      name: item.name ? `${item.collection} - ${item.name}` : `Product #${item.productId}`,
+      quantity: item.quantity
+    })),
+    trackingNumber: order.tracking_number,
+    weight: 1.5, // Default weight, could be calculated from items
+    dimensions: '8x6x4', // Default dimensions
+    serviceLevel: 'Standard Shipping'
+  };
+  
+  try {
+    const { generateShippingLabelBuffer } = require('../utils/pdfGenerator');
+    const pdfBuffer = await generateShippingLabelBuffer(shippingLabelData);
+    
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="shipping-label-${order.id}.pdf"`);
+    res.setHeader('Content-Length', pdfBuffer.length);
+    res.send(pdfBuffer);
+  } catch (error) {
+    console.error('Error generating shipping label:', error);
+    return next(new AppError('Failed to generate shipping label', 500));
+  }
 }));
 
 export default router; 

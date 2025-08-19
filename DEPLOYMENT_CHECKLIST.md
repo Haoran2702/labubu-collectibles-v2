@@ -10,9 +10,11 @@
 - [x] Created centralized API configuration in `frontend/app/utils/api.ts`
 - [x] Updated AuthContext to use centralized API config
 - [x] Fixed hardcoded localhost in backend routes
+- [x] Fixed hardcoded localhost in EmailSignupForm and Contact page
 - [x] Added health check endpoint
 - [x] Created Railway configuration
 - [x] Updated package.json with production scripts
+- [ ] **TODO**: Fix remaining hardcoded localhost in 25+ frontend files (can be done incrementally)
 
 ### Database & Security
 - [ ] Set up production SQLite database
@@ -21,7 +23,7 @@
 - [ ] Configure JWT_SECRET for production
 - [ ] Set up environment-specific configurations
 
-## 🔄 Phase 2: Platform Setup
+## 🔄 Phase 2: Platform Setup (READY TO START)
 
 ### Railway Setup
 - [ ] Create Railway account
@@ -29,6 +31,11 @@
 - [ ] Set up environment variables in Railway dashboard
 - [ ] Configure domain (labubu-collectibles.com)
 - [ ] Set up SSL certificate
+
+### Deployment Files Created
+- [x] Created `railway.toml` for backend configuration
+- [x] Created `railway-frontend.toml` for frontend configuration
+- [x] Created `RAILWAY_DEPLOYMENT_GUIDE.md` with step-by-step instructions
 
 ### Environment Variables to Set in Railway
 ```

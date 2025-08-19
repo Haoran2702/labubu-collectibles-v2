@@ -302,6 +302,42 @@ export function getNewsletterTemplate(title: string, content: string, unsubscrib
   return getBaseEmailTemplate(newsletterContent, title);
 }
 
+// Refund processed template
+export function getRefundProcessedTemplate(orderId: string, refundAmount: number, customerName: string, refundReason?: string) {
+  const content = `
+    <h2 style="color: #333; margin-bottom: 20px;">Refund Processed 💰</h2>
+    <p>Hi ${customerName},</p>
+    <p>Your refund has been successfully processed and will be credited back to your original payment method.</p>
+    
+    <div class="highlight">
+      <p><strong>Refund Details:</strong></p>
+      <p>Order ID: <strong>${orderId}</strong></p>
+      <p>Refund Amount: <strong>$${refundAmount.toFixed(2)}</strong></p>
+      ${refundReason ? `<p>Reason: <strong>${refundReason}</strong></p>` : ''}
+      <p>Status: <strong>Processed</strong></p>
+    </div>
+    
+    <div style="text-align: center; margin: 30px 0;">
+      <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/orders/${orderId}" class="button">View Order Details</a>
+    </div>
+    
+    <div class="highlight">
+      <p><strong>Important Information:</strong></p>
+      <ul>
+        <li>Refunds typically appear in your account within 3-5 business days</li>
+        <li>The refund will be credited to your original payment method</li>
+        <li>If you don't see the refund after 5 days, please contact your bank</li>
+        <li>You can track the refund status in your order history</li>
+      </ul>
+    </div>
+    
+    <p>Thank you for your patience, and we apologize for any inconvenience caused.</p>
+    <p>If you have any questions about this refund, please don't hesitate to contact our support team.</p>
+  `;
+  
+  return getBaseEmailTemplate(content, 'Refund Processed - Labubu Collectibles');
+}
+
 // Email sender utility
 export async function sendEmail(to: string, subject: string, html: string) {
   const transporter = nodemailer.createTransport({

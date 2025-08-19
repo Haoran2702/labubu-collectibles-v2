@@ -1,4 +1,14 @@
 {
+  "name": "labubu-collectibles",
+  "version": "1.0.0",
+  "description": "Labubu Collectibles E-commerce Platform",
+  "scripts": {
+    "dev:restart": "./scripts/dev-restart.sh",
+    "dev:backend": "cd backend && npm run build && NODE_ENV=development node dist/bin/www.js",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "cd backend && npm run build && cd ../frontend && npm run build",
+    "start": "cd backend && NODE_ENV=production node dist/bin/www.js"
+  },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@paypal/checkout-server-sdk": "^1.0.3",
