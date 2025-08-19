@@ -9,6 +9,14 @@ router.get('/', (req: Request, res: Response) => {
   res.send('API is running');
 });
 
+router.get('/health', (req: Request, res: Response) => {
+  res.status(200).json({ 
+    status: 'healthy', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
 router.post('/email-signup', expressAsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const { email } = req.body;
   if (!email) {

@@ -16,8 +16,15 @@ import ordersRouter from './routes/orders';
 import authRouter from './routes/auth';
 import paymentsRouter from './routes/payments';
 import supportRouter from './routes/support';
+import privacyRouter from './routes/privacy';
+import forecastingRouter from './routes/forecasting';
+import analyticsRouter from './routes/analytics';
+import reviewsRouter from './routes/reviews';
+import marketingRouter from './routes/marketing';
+
+import currencyRouter from './routes/currency';
+import fraudRouter from './routes/fraud';
 import { AppError } from './errors';
-import { serveCachedImage } from './utils/imageCache';
 
 const app: Application = express();
 
@@ -30,8 +37,13 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
+// CORS configuration
+const allowedOrigins = process.env.NODE_ENV === 'production' 
+  ? [process.env.FRONTEND_URL || 'https://labubu-collectibles.com']
+  : ['http://localhost:3000', 'http://localhost:3002', 'http://localhost:3003'];
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3002', 'http://localhost:3003'],
+  origin: allowedOrigins,
   credentials: true
 }));
 // Replace morgan logger with winston integration
@@ -45,9 +57,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve cached images
-app.use(serveCachedImage);
-
 // Apply rate limiting to all routes
 app.use(limiter);
 
@@ -60,6 +69,14 @@ app.use('/api/orders', ordersRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/payments', paymentsRouter);
 app.use('/api/support', supportRouter);
+app.use('/api/privacy', privacyRouter);
+app.use('/api/forecasting', forecastingRouter);
+app.use('/api/analytics', analyticsRouter);
+app.use('/api/reviews', reviewsRouter);
+app.use('/api/marketing', marketingRouter);
+
+app.use('/api/currency', currencyRouter);
+app.use('/api/fraud', fraudRouter);
 
 // Error handling middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
