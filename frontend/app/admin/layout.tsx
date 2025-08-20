@@ -33,14 +33,16 @@ function getTokenExpiration(token: string): number | null {
     const payload = JSON.parse(atob(parts[1]));
     console.log('DEBUG: JWT payload:', payload);
     
-    if (!payload.exp) {
-      console.log('DEBUG: No exp field in JWT payload');
-      return null;
+    // Check for exp field, but don't fail if it's missing
+    if (payload.exp) {
+      const expiration = payload.exp * 1000;
+      console.log('DEBUG: Token expires at:', new Date(expiration));
+      return expiration;
+    } else {
+      console.log('DEBUG: No exp field in JWT payload, assuming valid for 30 minutes');
+      // If no exp field, assume token is valid for 30 minutes from now
+      return Date.now() + (30 * 60 * 1000);
     }
-    
-    const expiration = payload.exp * 1000;
-    console.log('DEBUG: Token expires at:', new Date(expiration));
-    return expiration;
   } catch (error) {
     console.warn('Failed to parse JWT token:', error);
     return null;
@@ -60,35 +62,68 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   useEffect(() => {
     if (typeof window === "undefined") return;
     
-    try {
-      const token = getToken();
-      
-      if (!token) {
-        // No token, redirect to login
-        router.replace("/admin/login");
-        return;
-      }
-      
-      const exp = getTokenExpiration(token);
-      const now = Date.now();
-      
-      if (!exp || exp <= now) {
-        // Token expired, clean up and redirect
+    const checkAuth = async () => {
+      try {
+        const token = getToken();
+        
+        if (!token) {
+          console.log('DEBUG: No token found, redirecting to login');
+          router.replace("/admin/login");
+          return;
+        }
+        
+        // First check if token has basic JWT format
+        const exp = getTokenExpiration(token);
+        const now = Date.now();
+        
+        if (!exp || exp <= now) {
+          console.log('DEBUG: Token expired or invalid, redirecting to login');
+          sessionStorage.removeItem("admin_jwt");
+          localStorage.removeItem("admin_jwt");
+          router.replace("/admin/login");
+          return;
+        }
+        
+        // Additional check: verify token with backend
+        try {
+          const response = await fetch('/api/auth/profile', {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          
+          if (response.ok) {
+            const userData = await response.json();
+            if (userData.user?.role === 'admin') {
+              console.log('DEBUG: Admin authentication successful');
+              setAuthChecked(true);
+              return;
+            } else {
+              console.log('DEBUG: User is not admin');
+            }
+          } else {
+            console.log('DEBUG: Profile API returned error:', response.status);
+          }
+        } catch (profileError) {
+          console.log('DEBUG: Profile API call failed:', profileError);
+        }
+        
+        // If we get here, authentication failed
+        console.log('DEBUG: Authentication failed, redirecting to login');
         sessionStorage.removeItem("admin_jwt");
         localStorage.removeItem("admin_jwt");
         router.replace("/admin/login");
-        return;
+        
+      } catch (error) {
+        console.error('Error during admin auth check:', error);
+        sessionStorage.removeItem("admin_jwt");
+        localStorage.removeItem("admin_jwt");
+        router.replace("/admin/login");
       }
-      
-      // Token is valid, allow access
-      setAuthChecked(true);
-    } catch (error) {
-      console.error('Error during admin auth check:', error);
-      // Clean up and redirect on any error
-      sessionStorage.removeItem("admin_jwt");
-      localStorage.removeItem("admin_jwt");
-      router.replace("/admin/login");
-    }
+    };
+    
+    checkAuth();
   }, [router]);
 
   // Allow /admin/login to render without token check or nav

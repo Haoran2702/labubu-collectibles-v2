@@ -1,0 +1,100 @@
+=== BACKEND LOGS ===
+Starting Container
+npm warn config production Use `--omit=dev` instead.
+
+> backend@0.0.14 start
+> NODE_ENV=production node ./dist/bin/www.js
+
+Listening on port 3001
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:43:31 +0000] "POST /api/auth/login HTTP/1.1" 200 536 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:43:31.688Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:43:31 +0000] "GET /api/auth/profile HTTP/1.1" 200 150 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:43:31.844Z"}
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:43:31 +0000] "GET /api/products HTTP/1.1" 200 6409 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:43:31.954Z"}
+Email sent successfully to: tancredi.m.buzzi@gmail.com
+Low stock alert sent to tancredi.m.buzzi@gmail.com for product Baba
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:43:38 +0000] "PUT /api/products/1/stock HTTP/1.1" 200 251 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:43:38.900Z"}
+Email sent successfully to: tancredi.m.buzzi@gmail.com
+Low stock alert sent to tancredi.m.buzzi@gmail.com for product Dada
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:43:41 +0000] "PUT /api/products/2/stock HTTP/1.1" 200 251 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:43:41.680Z"}
+Email sent successfully to: tancredi.m.buzzi@gmail.com
+Low stock alert sent to tancredi.m.buzzi@gmail.com for product Dada
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:43:44 +0000] "PUT /api/products/2/stock HTTP/1.1" 200 251 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:43:44.132Z"}
+Email sent successfully to: tancredi.m.buzzi@gmail.com
+Low stock alert sent to tancredi.m.buzzi@gmail.com for product Ququ
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:43:46 +0000] "PUT /api/products/4/stock HTTP/1.1" 200 251 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:43:46.264Z"}
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:43:47 +0000] "PUT /api/products/5/stock HTTP/1.1" 200 252 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:43:47.705Z"}
+Email sent successfully to: tancredi.m.buzzi@gmail.com
+Low stock alert sent to tancredi.m.buzzi@gmail.com for product Zizi
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:43:51 +0000] "PUT /api/products/6/stock HTTP/1.1" 200 251 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:43:51.206Z"}
+Email sent successfully to: tancredi.m.buzzi@gmail.com
+Low stock alert sent to tancredi.m.buzzi@gmail.com for product Zizi
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:43:52 +0000] "PUT /api/products/6/stock HTTP/1.1" 200 251 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:43:52.879Z"}
+Email sent successfully to: tancredi.m.buzzi@gmail.com
+Low stock alert sent to tancredi.m.buzzi@gmail.com for product Box
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:43:55 +0000] "PUT /api/products/8/stock HTTP/1.1" 200 276 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:43:55.290Z"}
+Email sent successfully to: tancredi.m.buzzi@gmail.com
+Low stock alert sent to tancredi.m.buzzi@gmail.com for product Box
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:43:59 +0000] "PUT /api/products/16/stock HTTP/1.1" 200 282 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:43:59.636Z"}
+Email sent successfully to: tancredi.m.buzzi@gmail.com
+Low stock alert sent to tancredi.m.buzzi@gmail.com for product Id (Secret)
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:44:01 +0000] "PUT /api/products/15/stock HTTP/1.1" 200 257 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:44:01.385Z"}
+Email sent successfully to: tancredi.m.buzzi@gmail.com
+Low stock alert sent to tancredi.m.buzzi@gmail.com for product Serenity
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:44:03 +0000] "PUT /api/products/12/stock HTTP/1.1" 200 270 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:44:03.323Z"}
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:44:03 +0000] "PUT /api/products/13/stock HTTP/1.1" 200 263 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:44:03.684Z"}
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:44:04 +0000] "PUT /api/products/14/stock HTTP/1.1" 200 263 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:44:04.716Z"}
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:44:06 +0000] "PUT /api/products/9/stock HTTP/1.1" 200 262 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:44:06.750Z"}
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:44:07 +0000] "PUT /api/products/10/stock HTTP/1.1" 200 273 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:44:07.464Z"}
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:44:08 +0000] "PUT /api/products/11/stock HTTP/1.1" 200 269 "https://labubu-collectibles.com/admin/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:44:08.152Z"}
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:44:12 +0000] "GET /api/products HTTP/1.1" 200 6415 "https://labubu-collectibles.com/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:44:12.124Z"}
+[31merror[39m: Invalid credentials {"isOperational":true,"stack":"Error: Invalid credentials\n    at /app/dist/routes/auth.js:160:21\n    at Generator.next (<anonymous>)\n    at fulfilled (/app/dist/routes/auth.js:5:58)","statusCode":401,"timestamp":"2025-08-20T13:44:19.179Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:44:19 +0000] "POST /api/auth/login HTTP/1.1" 401 42 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:44:19.181Z"}
+DEBUG: Generated verification token: da566174d8...
+DEBUG: Token expires at: 2025-08-21T13:44:57.745Z
+DEBUG: User created with ID: 2
+Email sent successfully to: kogif62973@gardsiir.com
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:44:58 +0000] "POST /api/auth/register HTTP/1.1" 201 119 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:44:58.948Z"}
+DEBUG: Verification request for: kogif62973@gardsiir.com with token: da566174d8...
+DEBUG: User found, checking expiration...
+DEBUG: Email verification successful for user: 2
+Email sent successfully to: kogif62973@gardsiir.com
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:45:14 +0000] "POST /api/auth/verify-email HTTP/1.1" 200 78 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:45:14.953Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:45:27 +0000] "POST /api/auth/login HTTP/1.1" 200 533 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:45:27.914Z"}
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:45:28 +0000] "GET /api/products HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:45:28.034Z"}
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:45:33 +0000] "GET /api/products HTTP/1.1" 304 - "https://labubu-collectibles.com/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:45:33.402Z"}
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:45:44 +0000] "POST /api/products/check-stock HTTP/1.1" 200 109 "https://labubu-collectibles.com/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:45:44.596Z"}
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:45:48 +0000] "POST /api/products/check-stock HTTP/1.1" 200 109 "https://labubu-collectibles.com/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:45:48.803Z"}
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:45:49 +0000] "POST /api/products/check-stock HTTP/1.1" 200 109 "https://labubu-collectibles.com/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:45:49.216Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:45:53 +0000] "GET /api/auth/addresses HTTP/1.1" 200 16 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:45:53.304Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:46:06 +0000] "GET /api/auth/profile HTTP/1.1" 200 147 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:46:06.621Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:46:11 +0000] "POST /api/auth/login HTTP/1.1" 200 536 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:46:11.677Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:46:11 +0000] "GET /api/auth/profile HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:46:11.761Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:46:17 +0000] "POST /api/auth/login HTTP/1.1" 200 536 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:46:17.526Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:46:17 +0000] "GET /api/auth/profile HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:46:17.612Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:46:21 +0000] "GET /api/auth/profile HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:46:21.747Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:46:24 +0000] "GET /api/auth/profile HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:46:24.708Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:46:28 +0000] "POST /api/auth/login HTTP/1.1" 200 536 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:46:28.592Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:46:28 +0000] "GET /api/auth/profile HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:46:28.700Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:46:41 +0000] "GET /api/auth/profile HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:46:41.699Z"}
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:46:41 +0000] "GET /api/products HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:46:41.749Z"}
+[32minfo[39m: 208.77.244.45 - - [20/Aug/2025:13:46:41 +0000] "GET /product_images/placeholder-product.svg HTTP/1.1" 200 524 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:46:41.783Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:46:44 +0000] "GET /api/auth/profile HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:46:44.176Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:46:52 +0000] "POST /api/auth/login HTTP/1.1" 200 536 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:46:52.244Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:46:52 +0000] "GET /api/auth/profile HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:46:52.407Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:47:09 +0000] "POST /api/auth/login HTTP/1.1" 200 536 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:47:09.196Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:47:09 +0000] "GET /api/auth/profile HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:47:09.311Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:47:27 +0000] "POST /api/auth/login HTTP/1.1" 200 536 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:47:27.738Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:47:27 +0000] "GET /api/auth/profile HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:47:27.824Z"}
+
+=== FRONTEND LOGS ===
+Starting Container
+npm warn config production Use `--omit=dev` instead.
+
+> frontend@0.1.1 start
+> next start
+
+   ▲ Next.js 15.3.5
+   - Local:        http://localhost:8080
+   - Network:      http://10.250.16.214:8080
+
+ ✓ Starting...
+ ✓ Ready in 715ms

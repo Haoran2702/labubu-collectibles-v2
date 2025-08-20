@@ -1,0 +1,38 @@
+=== BACKEND LOGS ===
+Starting Container
+npm warn config production Use `--omit=dev` instead.
+
+> backend@0.0.14 start
+> NODE_ENV=production node ./dist/bin/www.js
+
+Listening on port 3001
+[32minfo[39m: 208.77.244.30 - - [20/Aug/2025:13:37:26 +0000] "GET /api/products HTTP/1.1" 200 6409 "https://labubu-collectibles.com/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:37:26.369Z"}
+[31merror[39m: User not found {"isOperational":true,"stack":"Error: User not found\n    at /app/dist/routes/auth.js:269:21\n    at Generator.next (<anonymous>)\n    at fulfilled (/app/dist/routes/auth.js:5:58)","statusCode":404,"timestamp":"2025-08-20T13:37:26.456Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:37:26 +0000] "GET /api/auth/profile HTTP/1.1" 404 37 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:37:26.458Z"}
+[32minfo[39m: 208.77.244.30 - - [20/Aug/2025:13:37:29 +0000] "GET /api/products HTTP/1.1" 304 - "https://labubu-collectibles.com/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:37:29.344Z"}
+
+=== FRONTEND LOGS ===
+Starting Container
+npm warn config production Use `--omit=dev` instead.
+
+> frontend@0.1.0 start
+> next start
+
+   ▲ Next.js 15.3.5
+   - Local:        http://localhost:8080
+   - Network:      http://10.250.15.196:8080
+
+ ✓ Starting...
+ ✓ Ready in 764ms
+Stopping Container
+npm error path /app
+npm error command failed
+npm error signal SIGTERM
+npm error command sh -c next start
+npm error A complete log of this run can be found in: /root/.npm/_logs/2025-08-20T13_18_45_805Z-debug-0.log
+Stopping Container
+npm error path /app
+npm error command failed
+npm error signal SIGTERM
+npm error command sh -c NODE_ENV=production node ./dist/bin/www.js
+npm error A complete log of this run can be found in: /root/.npm/_logs/2025-08-20T13_31_51_130Z-debug-0.log
