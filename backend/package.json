@@ -1,6 +1,6 @@
 {
   "name": "backend",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "private": true,
   "scripts": {
     "build": "tsc",
@@ -9,6 +9,7 @@
     "postinstall": "npm run build && npm run seed && npm run migrate",
     "seed": "ts-node seed-data.ts",
     "migrate": "node migrations/add-admin-user.js && node migrations/add-email-verification-columns.js",
+    "reset-db": "node scripts/reset-database.js",
     "test": "node tests/setupTestDB.js && jest --runInBand",
     "backup": "node scripts/backup.js backup",
     "backup:list": "node scripts/backup.js list",

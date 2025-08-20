@@ -37,19 +37,25 @@ async function seed() {
   console.log('Database initialized, now seeding products...');
   const db = await openDb();
   
-  // Seed products
-  await db.run('DELETE FROM products');
+  // Seed products - only if they don't exist
   for (const product of products) {
-    await db.run(
-      'INSERT INTO products (name, price, imageUrl, collection) VALUES (?, ?, ?, ?)',
-      product.name,
-      product.price,
-      product.imageUrl,
-      product.collection
-    );
+    const existingProduct = await db.get('SELECT * FROM products WHERE name = ? AND collection = ?', [product.name, product.collection]);
+    
+    if (!existingProduct) {
+      await db.run(
+        'INSERT INTO products (name, price, imageUrl, collection) VALUES (?, ?, ?, ?)',
+        product.name,
+        product.price,
+        product.imageUrl,
+        product.collection
+      );
+      console.log(`Product "${product.name}" created`);
+    } else {
+      console.log(`Product "${product.name}" already exists, skipping`);
+    }
   }
   
-  // Create admin user
+  // Create admin user - only if it doesn't exist
   const adminEmail = 'tancredi.m.buzzi@gmail.com';
   const adminPassword = 'tupMyx-byfwef-cavwi3';
   const hashedPassword = await bcrypt.hash(adminPassword, 10);
@@ -58,12 +64,16 @@ async function seed() {
   const existingUser = await db.get('SELECT * FROM users WHERE email = ?', [adminEmail]);
   
   if (existingUser) {
-    // Update existing user to admin with verified email
-    await db.run(
-      'UPDATE users SET role = ?, emailVerified = ?, password = ? WHERE email = ?',
-      ['admin', 1, hashedPassword, adminEmail]
-    );
-    console.log('Admin user updated successfully!');
+    // Only update if not already admin
+    if (existingUser.role !== 'admin') {
+      await db.run(
+        'UPDATE users SET role = ?, emailVerified = ? WHERE email = ?',
+        ['admin', 1, adminEmail]
+      );
+      console.log('User promoted to admin successfully!');
+    } else {
+      console.log('Admin user already exists, skipping');
+    }
   } else {
     // Create new admin user
     await db.run(
