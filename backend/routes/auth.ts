@@ -325,6 +325,11 @@ router.post('/resend-verification', expressAsyncHandler(async (req: Request, res
 
 // Get current user profile
 router.get('/profile', authenticateToken, expressAsyncHandler(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  // Explicitly disable caching of this sensitive endpoint
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  res.setHeader('Surrogate-Control', 'no-store');
   const db = await openDb();
   const user = await db.get(
     'SELECT id, email, firstName, lastName, role, createdAt FROM users WHERE id = ?',

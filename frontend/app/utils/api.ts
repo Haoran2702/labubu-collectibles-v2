@@ -42,12 +42,21 @@ export const apiCall = async (endpoint: string, options: RequestInit = {}) => {
   };
 
   // Add auth token if available
-  const token = localStorage.getItem('authToken');
-  if (token) {
-    defaultOptions.headers = {
-      ...defaultOptions.headers,
-      'Authorization': `Bearer ${token}`,
-    };
+  try {
+    // Only attach customer auth token if caller did not already set Authorization
+    const existingAuthHeader = (defaultOptions.headers as Record<string, string>)?.['Authorization']
+      || (defaultOptions.headers as Record<string, string>)?.['authorization'];
+    if (!existingAuthHeader && typeof window !== 'undefined') {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        defaultOptions.headers = {
+          ...defaultOptions.headers,
+          'Authorization': `Bearer ${token}`,
+        } as Record<string, string>;
+      }
+    }
+  } catch (_) {
+    // noop - safest fallback is to not add any header
   }
 
   return fetch(url, defaultOptions);

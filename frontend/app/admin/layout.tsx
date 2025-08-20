@@ -96,11 +96,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         
         // Additional check: verify token with backend
         try {
-          const response = await fetch('/api/auth/profile', {
+          const response = await fetch(`/api/auth/profile?ts=${Date.now()}` , {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
+            cache: 'no-store'
           });
           
           if (response.ok) {
