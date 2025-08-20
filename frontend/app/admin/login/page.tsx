@@ -54,6 +54,7 @@ export default function AdminLogin() {
       // Clean up any existing tokens
       localStorage.removeItem("admin_jwt");
       sessionStorage.removeItem("admin_jwt");
+      sessionStorage.removeItem("admin_auth_verified");
       
       // Store the new token in sessionStorage
       sessionStorage.setItem("admin_jwt", data.token);

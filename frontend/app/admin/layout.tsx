@@ -62,12 +62,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   useEffect(() => {
     if (typeof window === "undefined") return;
     
+    // Check if we already verified auth in this session
+    const authVerified = sessionStorage.getItem("admin_auth_verified");
+    if (authVerified === "true") {
+      setAuthChecked(true);
+      return;
+    }
+    
     const checkAuth = async () => {
       try {
         const token = getToken();
         
         if (!token) {
           console.log('DEBUG: No token found, redirecting to login');
+          sessionStorage.removeItem("admin_jwt");
+          localStorage.removeItem("admin_jwt");
           router.replace("/admin/login");
           return;
         }
@@ -80,6 +89,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           console.log('DEBUG: Token expired or invalid, redirecting to login');
           sessionStorage.removeItem("admin_jwt");
           localStorage.removeItem("admin_jwt");
+          sessionStorage.removeItem("admin_auth_verified");
           router.replace("/admin/login");
           return;
         }
@@ -97,6 +107,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             const userData = await response.json();
             if (userData.user?.role === 'admin') {
               console.log('DEBUG: Admin authentication successful');
+              sessionStorage.setItem("admin_auth_verified", "true");
               setAuthChecked(true);
               return;
             } else {
@@ -113,12 +124,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         console.log('DEBUG: Authentication failed, redirecting to login');
         sessionStorage.removeItem("admin_jwt");
         localStorage.removeItem("admin_jwt");
+        sessionStorage.removeItem("admin_auth_verified");
         router.replace("/admin/login");
         
       } catch (error) {
         console.error('Error during admin auth check:', error);
         sessionStorage.removeItem("admin_jwt");
         localStorage.removeItem("admin_jwt");
+        sessionStorage.removeItem("admin_auth_verified");
         router.replace("/admin/login");
       }
     };
@@ -134,6 +147,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   function logout() {
     sessionStorage.removeItem("admin_jwt");
     localStorage.removeItem("admin_jwt"); // Clean up localStorage too
+    sessionStorage.removeItem("admin_auth_verified");
     router.push("/admin/login");
   }
 
