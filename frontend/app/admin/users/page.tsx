@@ -22,20 +22,11 @@ interface User {
   statusDistribution: Array<{ status: string; count: number }>;
 }
 
-interface SortState {
-  sortBy: string;
-  sortOrder: 'asc' | 'desc';
-}
-
 export default function UsersPage() {
   const { addToast } = useToast();
   const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
-  const [sortOptions, setSortOptions] = useState<SortState>({
-    sortBy: 'registrationDate',
-    sortOrder: 'desc'
-  });
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [showUserDetails, setShowUserDetails] = useState(false);
@@ -83,9 +74,7 @@ export default function UsersPage() {
     }
   };
 
-  const handleSortChange = (key: keyof SortState, value: string) => {
-    setSortOptions(prev => ({ ...prev, [key]: value }));
-  };
+
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -99,48 +88,12 @@ export default function UsersPage() {
     }
   };
 
-  // Filter and sort users
-  const filteredAndSortedUsers = users
-    .filter(user => 
-      user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .sort((a, b) => {
-      let aValue: any, bValue: any;
-      
-      switch (sortOptions.sortBy) {
-        case 'registrationDate':
-          aValue = new Date(a.registrationDate).getTime();
-          bValue = new Date(b.registrationDate).getTime();
-          break;
-        case 'totalOrders':
-          aValue = a.totalOrders;
-          bValue = b.totalOrders;
-          break;
-        case 'totalSpent':
-          aValue = a.totalSpent;
-          bValue = b.totalSpent;
-          break;
-        case 'lastOrderDate':
-          aValue = a.lastOrderDate ? new Date(a.lastOrderDate).getTime() : 0;
-          bValue = b.lastOrderDate ? new Date(b.lastOrderDate).getTime() : 0;
-          break;
-        case 'name':
-          aValue = `${a.firstName} ${a.lastName}`.toLowerCase();
-          bValue = `${b.firstName} ${b.lastName}`.toLowerCase();
-          break;
-        default:
-          aValue = new Date(a.registrationDate).getTime();
-          bValue = new Date(b.registrationDate).getTime();
-      }
-
-      if (sortOptions.sortOrder === 'asc') {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return aValue < bValue ? 1 : -1;
-      }
-    });
+  // Filter users
+  const filteredUsers = users.filter(user => 
+    user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (loadingUsers) {
     return (
@@ -162,72 +115,20 @@ export default function UsersPage() {
           <p className="text-xl text-gray-500 mb-8">Monitor user activity and gather insights</p>
         </header>
 
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-          <div className="bg-white border border-gray-100 rounded-xl p-6 text-center">
-            <div className="text-3xl font-bold text-gray-900 mb-2">{users.length}</div>
-            <div className="text-sm text-gray-500">Total Users</div>
-          </div>
-          <div className="bg-white border border-gray-100 rounded-xl p-6 text-center">
-            <div className="text-3xl font-bold text-gray-900 mb-2">
-              {users.filter(u => u.totalOrders > 0).length}
-            </div>
-            <div className="text-sm text-gray-500">Active Customers</div>
-          </div>
-          <div className="bg-white border border-gray-100 rounded-xl p-6 text-center">
-            <div className="text-3xl font-bold text-gray-900 mb-2">
-              ${users.reduce((sum, u) => sum + u.totalSpent, 0).toFixed(2)}
-            </div>
-            <div className="text-sm text-gray-500">Total Revenue</div>
-          </div>
-          <div className="bg-white border border-gray-100 rounded-xl p-6 text-center">
-            <div className="text-3xl font-bold text-gray-900 mb-2">
-              {users.reduce((sum, u) => sum + u.totalOrders, 0)}
-            </div>
-            <div className="text-sm text-gray-500">Total Orders</div>
-          </div>
-        </div>
-
-        {/* Controls */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          {/* Search */}
-          <div className="flex-1">
-            <input
-              type="text"
-              placeholder="Search users by name or email..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black/10 focus:border-black/10 bg-white"
-            />
-          </div>
-
-          {/* Sort Controls */}
-          <div className="flex gap-2">
-            <select
-              value={sortOptions.sortBy}
-              onChange={(e) => handleSortChange('sortBy', e.target.value)}
-              className="px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black/10 focus:border-black/10 bg-white"
-            >
-              <option value="registrationDate">Registration Date</option>
-              <option value="name">Name</option>
-              <option value="totalOrders">Total Orders</option>
-              <option value="totalSpent">Total Spent</option>
-              <option value="lastOrderDate">Last Order</option>
-            </select>
-            <select
-              value={sortOptions.sortOrder}
-              onChange={(e) => handleSortChange('sortOrder', e.target.value as 'asc' | 'desc')}
-              className="px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black/10 focus:border-black/10 bg-white"
-            >
-              <option value="desc">Newest First</option>
-              <option value="asc">Oldest First</option>
-            </select>
-          </div>
+        {/* Search */}
+        <div className="mb-8">
+          <input
+            type="text"
+            placeholder="Search users by name or email..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black/10 focus:border-black/10 bg-white"
+          />
         </div>
 
         {/* Users List */}
         <div className="space-y-4">
-          {filteredAndSortedUsers.map((user) => (
+          {filteredUsers.map((user) => (
             <div key={user.id} className="bg-white border border-gray-100 rounded-xl p-6 hover:shadow-sm transition-shadow">
               <div className="flex flex-col md:flex-row md:items-center gap-4">
                 {/* User Info */}
@@ -245,9 +146,7 @@ export default function UsersPage() {
                       <p className="text-sm text-gray-500">{user.email}</p>
                     </div>
                   </div>
-                  <div className="text-xs text-gray-400">
-                    Registered: {new Date(user.registrationDate).toLocaleDateString()}
-                  </div>
+
                 </div>
 
                 {/* Stats */}
@@ -304,7 +203,7 @@ export default function UsersPage() {
           ))}
         </div>
 
-        {filteredAndSortedUsers.length === 0 && (
+        {filteredUsers.length === 0 && (
           <div className="text-center py-12">
             <div className="text-gray-400 text-6xl mb-4">👥</div>
             <h2 className="text-xl font-semibold text-gray-600 mb-2">No users found</h2>

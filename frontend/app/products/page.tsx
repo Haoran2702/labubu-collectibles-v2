@@ -6,7 +6,6 @@ import { useCart } from "../contexts/CartContext";
 import { useCurrency } from "../contexts/CurrencyContext";
 import { useToast } from "../components/Toast";
 import ProductSearch from "../components/ProductSearch";
-import CurrencySelector from "../components/CurrencySelector";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import Head from "next/head";
@@ -219,13 +218,6 @@ export default function Products() {
           <h1 className="text-5xl font-bold text-gray-900 mb-4 tracking-tight">Labubu Collections</h1>
           <p className="text-xl text-gray-500 mb-8">Explore all Labubu figures and collectibles.</p>
           
-          {/* Currency Selector */}
-          <div className="flex justify-center mb-6">
-            <div className="w-64">
-              <CurrencySelector showLabel={true} compact={false} />
-            </div>
-          </div>
-          
           <div className="flex flex-wrap justify-center gap-3 mb-2">
             {collectionNames.map((col) => (
               <button
@@ -276,6 +268,14 @@ export default function Products() {
                           </span>
                         </div>
                       )}
+                      {/* Low stock banner at bottom of image */}
+                      {stockStatus.label && product.stock > 0 && (
+                        <div className="absolute bottom-0 left-0 right-0">
+                          <div className={`px-3 py-1.5 text-xs font-medium ${stockStatus.color} ${stockStatus.bgColor} rounded-xl`}>
+                            {stockStatus.label}
+                          </div>
+                        </div>
+                      )}
                     </div>
                     
                     <h3 className={`text-lg font-semibold mb-2 tracking-tight font-sans ${isSecret ? 'bg-gradient-to-r from-[#C9B037] via-[#FFD700] to-[#C9B037] text-transparent bg-clip-text' : 'text-gray-900'}`}>
@@ -283,13 +283,6 @@ export default function Products() {
                     </h3>
                     
                     <span className="text-2xl font-bold text-gray-900 mb-2">{formatPrice(product.price)}</span>
-                    
-                    {/* Stock warning */}
-                    {stockStatus.label && (
-                      <div className={`mb-3 px-3 py-1 rounded-full text-xs font-medium ${stockStatus.color} ${stockStatus.bgColor} border ${stockStatus.borderColor}`}>
-                        {stockStatus.label}
-                      </div>
-                    )}
                     
                     <div className="flex items-center gap-2 justify-center w-full">
                       <Link
