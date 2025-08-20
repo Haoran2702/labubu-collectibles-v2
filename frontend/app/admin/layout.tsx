@@ -19,17 +19,28 @@ function getTokenExpiration(token: string): number | null {
   try {
     // Check if token has the correct format
     if (!token || typeof token !== 'string' || !token.includes('.')) {
+      console.log('DEBUG: Invalid token format');
       return null;
     }
     
     const parts = token.split('.');
     if (parts.length !== 3) {
+      console.log('DEBUG: Token doesn\'t have 3 parts');
       return null;
     }
     
     // Decode the payload part
     const payload = JSON.parse(atob(parts[1]));
-    return payload.exp ? payload.exp * 1000 : null;
+    console.log('DEBUG: JWT payload:', payload);
+    
+    if (!payload.exp) {
+      console.log('DEBUG: No exp field in JWT payload');
+      return null;
+    }
+    
+    const expiration = payload.exp * 1000;
+    console.log('DEBUG: Token expires at:', new Date(expiration));
+    return expiration;
   } catch (error) {
     console.warn('Failed to parse JWT token:', error);
     return null;
@@ -51,17 +62,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     
     try {
       const token = getToken();
-      const exp = token ? getTokenExpiration(token) : null;
+      
+      if (!token) {
+        // No token, redirect to login
+        router.replace("/admin/login");
+        return;
+      }
+      
+      const exp = getTokenExpiration(token);
       const now = Date.now();
       
-      if (!token || !exp || exp <= now) {
-        // Clean up any invalid tokens
+      if (!exp || exp <= now) {
+        // Token expired, clean up and redirect
         sessionStorage.removeItem("admin_jwt");
-        localStorage.removeItem("admin_jwt"); // Clean up localStorage too
+        localStorage.removeItem("admin_jwt");
         router.replace("/admin/login");
-      } else {
-        setAuthChecked(true);
+        return;
       }
+      
+      // Token is valid, allow access
+      setAuthChecked(true);
     } catch (error) {
       console.error('Error during admin auth check:', error);
       // Clean up and redirect on any error

@@ -1,0 +1,48 @@
+=== BACKEND LOGS ===
+Starting Container
+npm warn config production Use `--omit=dev` instead.
+
+> backend@0.0.14 start
+> NODE_ENV=production node ./dist/bin/www.js
+
+Listening on port 3001
+DEBUG: Generated verification token: 3ad618840a...
+DEBUG: Token expires at: 2025-08-21T13:26:07.579Z
+DEBUG: User created with ID: 2
+Email sent successfully to: kogif62973@gardsiir.com
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:26:08 +0000] "POST /api/auth/register HTTP/1.1" 201 119 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:26:08.823Z"}
+DEBUG: Verification request for: kogif62973@gardsiir.com with token: 3ad618840a...
+DEBUG: User found, checking expiration...
+DEBUG: Email verification successful for user: 2
+Email sent successfully to: kogif62973@gardsiir.com
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:26:29 +0000] "POST /api/auth/verify-email HTTP/1.1" 200 78 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:26:29.426Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:26:40 +0000] "POST /api/auth/login HTTP/1.1" 200 533 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:26:40.040Z"}
+[32minfo[39m: 208.77.244.30 - - [20/Aug/2025:13:26:40 +0000] "GET /api/products HTTP/1.1" 200 6409 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:26:40.316Z"}
+[32minfo[39m: 208.77.244.30 - - [20/Aug/2025:13:26:53 +0000] "GET /api/products HTTP/1.1" 304 - "https://labubu-collectibles.com/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:26:53.589Z"}
+[32minfo[39m: 208.77.244.30 - - [20/Aug/2025:13:27:04 +0000] "GET /api/products HTTP/1.1" 304 - "https://labubu-collectibles.com/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:27:04.150Z"}
+[31merror[39m: Error: SQLITE_ERROR: no such table: support_tickets {"timestamp":"2025-08-20T13:28:14.144Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:28:14 +0000] "GET /api/support HTTP/1.1" 500 78 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:28:14.145Z"}
+[32minfo[39m: 208.77.244.30 - - [20/Aug/2025:13:28:18 +0000] "GET /api/products HTTP/1.1" 304 - "https://labubu-collectibles.com/products" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:28:18.722Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:28:29 +0000] "GET /api/auth/profile HTTP/1.1" 200 147 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:28:29.591Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:28:34 +0000] "POST /api/auth/login HTTP/1.1" 200 536 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:28:34.901Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:28:34 +0000] "GET /api/auth/profile HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:28:34.982Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:28:39 +0000] "POST /api/auth/login HTTP/1.1" 200 536 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:28:39.409Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:28:39 +0000] "GET /api/auth/profile HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:28:39.459Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:28:45 +0000] "GET /api/auth/profile HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:28:45.484Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:28:48 +0000] "POST /api/auth/login HTTP/1.1" 200 536 "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:28:48.981Z"}
+[32minfo[39m: 93.44.200.176 - - [20/Aug/2025:13:28:49 +0000] "GET /api/auth/profile HTTP/1.1" 304 - "https://labubu-collectibles.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15" {"timestamp":"2025-08-20T13:28:49.081Z"}
+[32minfo[39m: 208.77.244.30 - - [20/Aug/2025:13:29:18 +0000] "GET /product_images/placeholder-product.svg HTTP/1.1" 200 524 "-" "com.apple.WebKit.Networking/20621.2.5.11.8 Network/4277.121.5 macOS/15.5" {"timestamp":"2025-08-20T13:29:18.308Z"}
+
+=== FRONTEND LOGS ===
+Starting Container
+npm warn config production Use `--omit=dev` instead.
+
+> frontend@0.1.0 start
+> next start
+
+   ▲ Next.js 15.3.5
+   - Local:        http://localhost:8080
+   - Network:      http://10.250.15.196:8080
+
+ ✓ Starting...
+ ✓ Ready in 764ms

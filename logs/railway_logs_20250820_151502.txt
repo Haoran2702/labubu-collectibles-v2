@@ -25,3 +25,15 @@ npm warn config production Use `--omit=dev` instead.
 
  ✓ Starting...
  ✓ Ready in 669ms
+Stopping Container
+npm error path /app
+npm error command failed
+npm error signal SIGTERM
+npm error command sh -c NODE_ENV=production node ./dist/bin/www.js
+npm error A complete log of this run can be found in: /root/.npm/_logs/2025-08-20T13_08_44_608Z-debug-0.log
+Stopping Container
+npm error path /app
+npm error command failed
+npm error signal SIGTERM
+npm error command sh -c next start
+npm error A complete log of this run can be found in: /root/.npm/_logs/2025-08-20T13_09_43_422Z-debug-0.log
