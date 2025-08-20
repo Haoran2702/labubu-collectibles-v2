@@ -17,8 +17,8 @@ async function promoteOrCreateAdmin() {
       return;
     }
     if (user) {
-      // User exists, update role to admin
-      db.run('UPDATE users SET role = ? WHERE email = ?', [role, email], (err) => {
+      // User exists, update role to admin and verify email
+      db.run('UPDATE users SET role = ?, emailVerified = ? WHERE email = ?', [role, 1, email], (err) => {
         if (err) {
           console.error('Failed to promote user:', err.message);
         } else {
@@ -30,8 +30,8 @@ async function promoteOrCreateAdmin() {
       // User does not exist, create admin user
       const hashedPassword = await bcrypt.hash(password, 10);
       db.run(
-        'INSERT INTO users (email, password, firstName, lastName, role, createdAt) VALUES (?, ?, ?, ?, ?, ?)',
-        [email, hashedPassword, firstName, lastName, role, new Date().toISOString()],
+        'INSERT INTO users (email, password, firstName, lastName, role, emailVerified, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [email, hashedPassword, firstName, lastName, role, 1, new Date().toISOString()],
         (err) => {
           if (err) {
             console.error('Failed to create admin user:', err.message);
