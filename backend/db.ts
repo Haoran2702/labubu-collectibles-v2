@@ -21,6 +21,7 @@ export async function initDb() {
       firstName TEXT NOT NULL,
       lastName TEXT NOT NULL,
       role TEXT NOT NULL DEFAULT 'customer',
+      emailVerified INTEGER DEFAULT 0,
       createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
       resetPasswordToken TEXT,
       resetPasswordExpires INTEGER
