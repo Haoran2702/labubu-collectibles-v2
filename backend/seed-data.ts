@@ -1,4 +1,5 @@
 import { openDb, initDb } from './db';
+import bcrypt from 'bcrypt';
 
 const products = [
   // Have a Seat
@@ -35,6 +36,8 @@ async function seed() {
   await initDb();
   console.log('Database initialized, now seeding products...');
   const db = await openDb();
+  
+  // Seed products
   await db.run('DELETE FROM products');
   for (const product of products) {
     await db.run(
@@ -46,9 +49,33 @@ async function seed() {
     );
   }
   
-  console.log('Products seeded successfully!');
+  // Create admin user
+  const adminEmail = 'tancredi.m.buzzi@gmail.com';
+  const adminPassword = 'tupMyx-byfwef-cavwi3';
+  const hashedPassword = await bcrypt.hash(adminPassword, 10);
+  
+  // Check if admin user exists
+  const existingUser = await db.get('SELECT * FROM users WHERE email = ?', [adminEmail]);
+  
+  if (existingUser) {
+    // Update existing user to admin with verified email
+    await db.run(
+      'UPDATE users SET role = ?, emailVerified = ?, password = ? WHERE email = ?',
+      ['admin', 1, hashedPassword, adminEmail]
+    );
+    console.log('Admin user updated successfully!');
+  } else {
+    // Create new admin user
+    await db.run(
+      'INSERT INTO users (email, password, firstName, lastName, role, emailVerified, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [adminEmail, hashedPassword, 'Tancredi', 'Buzzi', 'admin', 1, new Date().toISOString()]
+    );
+    console.log('Admin user created successfully!');
+  }
+  
+  console.log('Products and admin user seeded successfully!');
   await db.close();
-  console.log('Seeded ONLY Labubu products!');
+  console.log('Seeded Labubu products and admin user!');
 }
 
 seed(); 
