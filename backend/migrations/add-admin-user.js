@@ -7,7 +7,13 @@ const firstName = 'Tancredi';
 const lastName = 'Buzzi';
 const role = 'admin';
 
-const db = new sqlite3.Database('./database.sqlite');
+const db = new sqlite3.Database('./database.sqlite', (err) => {
+  if (err) {
+    console.error('Error opening database:', err.message);
+  } else {
+    console.log('Connected to the database.');
+  }
+});
 
 async function promoteOrCreateAdmin() {
   db.get('SELECT * FROM users WHERE email = ?', [email], async (err, user) => {

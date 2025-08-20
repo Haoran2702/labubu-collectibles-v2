@@ -1,0 +1,5 @@
+=== BACKEND LOGS ===
+Service 'backend' not found
+
+=== FRONTEND LOGS ===
+Service 'frontend' not found

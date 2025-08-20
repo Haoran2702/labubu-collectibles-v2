@@ -1,0 +1,19 @@
+=== BACKEND LOGS ===
+error: unexpected argument '--tail' found
+
+  tip: to pass '--tail' as a value, use '-- --tail'
+
+Usage: railway logs <--service <SERVICE>|--environment <ENVIRONMENT>|--deployment|--build|DEPLOYMENT_ID|--json>
+
+For more information, try '--help'.
+
+
+=== FRONTEND LOGS ===
+error: unexpected argument '--tail' found
+
+  tip: to pass '--tail' as a value, use '-- --tail'
+
+Usage: railway logs <--service <SERVICE>|--environment <ENVIRONMENT>|--deployment|--build|DEPLOYMENT_ID|--json>
+
+For more information, try '--help'.
+

@@ -7,7 +7,10 @@
     "dev:backend": "cd backend && npm run build && NODE_ENV=development node dist/bin/www.js",
     "dev:frontend": "cd frontend && npm run dev",
     "build:all": "cd backend && npm run build && cd ../frontend && npm run build",
-    "start:backend": "cd backend && NODE_ENV=production node dist/bin/www.js"
+    "start:backend": "cd backend && NODE_ENV=production node dist/bin/www.js",
+    "logs": "./scripts/quick-logs.sh",
+    "logs:detailed": "./scripts/capture-logs.sh",
+    "dev": "./scripts/dev-start.sh"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

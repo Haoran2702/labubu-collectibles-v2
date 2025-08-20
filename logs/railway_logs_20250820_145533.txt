@@ -1,0 +1,7 @@
+=== BACKEND LOGS ===
+./scripts/quick-logs.sh: line 17: timeout: command not found
+
+=== FRONTEND LOGS ===
+./scripts/quick-logs.sh: line 21: timeout: command not found
+
+Note: Frontend logs may be minimal as Next.js is mostly static in production
