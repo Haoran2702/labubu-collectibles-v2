@@ -11,12 +11,12 @@ const products = [
   { name: 'Bul (Secret)', collection: 'Have a Seat', price: 39.99, imageUrl: '/product_images/Bul.png.jpg' },
   { name: 'Box', collection: 'Have a Seat', price: 19.99, imageUrl: '/product_images/20240708_103610_362376_________1200x1200.jpg' },
   // Big Into Energy
-  { name: 'Love', collection: 'Big Into Energy', price: 27.99, imageUrl: '/product_images/big-into-energy/love.svg' },
-  { name: 'Happiness', collection: 'Big Into Energy', price: 27.99, imageUrl: '/product_images/big-into-energy/happiness.svg' },
-  { name: 'Loyalty', collection: 'Big Into Energy', price: 27.99, imageUrl: '/product_images/big-into-energy/loyalty.svg' },
-  { name: 'Serenity', collection: 'Big Into Energy', price: 27.99, imageUrl: '/product_images/big-into-energy/serenity.svg' },
-  { name: 'Hope', collection: 'Big Into Energy', price: 27.99, imageUrl: '/product_images/big-into-energy/hope.svg' },
-  { name: 'Luck', collection: 'Big Into Energy', price: 27.99, imageUrl: '/product_images/big-into-energy/luck.svg' },
+  { name: 'Love', collection: 'Big Into Energy', price: 27.99, imageUrl: '/product_images/big-into-energy/Love.jpg' },
+  { name: 'Happiness', collection: 'Big Into Energy', price: 27.99, imageUrl: '/product_images/big-into-energy/Happiness.jpg' },
+  { name: 'Loyalty', collection: 'Big Into Energy', price: 27.99, imageUrl: '/product_images/big-into-energy/Loyalty.jpg' },
+  { name: 'Serenity', collection: 'Big Into Energy', price: 27.99, imageUrl: '/product_images/big-into-energy/Serenity.jpg' },
+  { name: 'Hope', collection: 'Big Into Energy', price: 27.99, imageUrl: '/product_images/big-into-energy/Hope.jpg' },
+  { name: 'Luck', collection: 'Big Into Energy', price: 27.99, imageUrl: '/product_images/big-into-energy/Luck.jpg' },
   { name: 'Id (Secret)', collection: 'Big Into Energy', price: 34.99, imageUrl: '/product_images/Id.webp.jpeg' },
   { name: 'Box', collection: 'Big Into Energy', price: 19.99, imageUrl: '/product_images/20250422_091852_899579____9_____1200x1200.jpg' },
   // Exciting Macarons
