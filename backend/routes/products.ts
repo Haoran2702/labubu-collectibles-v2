@@ -166,17 +166,19 @@ router.put('/:id', requireAuth, expressAsyncHandler(async (req, res, next) => {
 
 // Helper function to track stock movements
 async function trackStockMovement(db: any, productId: number, quantity: number, movementType: string, reason: string, orderId?: string, userId?: number, previousStock?: number, newStock?: number) {
+  let finalPreviousStock: number;
+  let finalNewStock: number;
+  
   // Use provided values or fetch from database
-  if (previousStock === undefined || newStock === undefined) {
+  if (previousStock !== undefined && newStock !== undefined) {
+    finalPreviousStock = previousStock;
+    finalNewStock = newStock;
+  } else {
     const product = await db.get('SELECT stock FROM products WHERE id = ?', productId);
     if (!product) return;
-    previousStock = product.stock;
-    newStock = previousStock + quantity;
+    finalPreviousStock = product.stock;
+    finalNewStock = finalPreviousStock + quantity;
   }
-  
-  // Ensure we have valid values
-  const finalPreviousStock = previousStock ?? 0;
-  const finalNewStock = newStock ?? finalPreviousStock + quantity;
   
   await db.run(`
     INSERT INTO stock_movements (productId, quantity, movementType, reason, orderId, userId, previousStock, newStock)
