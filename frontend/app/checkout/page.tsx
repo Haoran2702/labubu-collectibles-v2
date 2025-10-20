@@ -40,6 +40,36 @@ export default function CheckoutWithPaymentPage() {
   const { user, updateProfile, getAddresses, addAddress } = useAuth();
   const { addToast } = useToast();
   const router = useRouter();
+
+  // Redirect to login if user is not authenticated
+  useEffect(() => {
+    if (user === null) {
+      // User is not authenticated, redirect to login
+      addToast({
+        type: 'info',
+        title: 'Login Required',
+        message: 'Please log in to proceed with checkout.'
+      });
+      router.push('/auth');
+    }
+  }, [user, router, addToast]);
+
+  // Show loading while checking authentication
+  if (user === undefined) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading checkout...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render checkout if user is not authenticated
+  if (!user) {
+    return null;
+  }
   
 
   
