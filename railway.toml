@@ -8,6 +8,10 @@ healthcheckTimeout = 100
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
 
+# Free plan configuration
+[build.healthcheck]
+path = "/api/health"
+
 [[services]]
 name = "labubu-backend"
 sourceDir = "backend"
