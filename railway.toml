@@ -11,6 +11,7 @@ restartPolicyMaxRetries = 10
 # Free plan configuration
 [build.healthcheck]
 path = "/api/health"
+# Triggered redeploy to fix frontend loading issue
 
 [[services]]
 name = "labubu-backend"
