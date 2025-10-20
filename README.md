@@ -84,16 +84,21 @@ Labubu Collectibles is a premium e-commerce platform designed for collectors and
 - **PDFKit**: PDF generation for invoices
 
 ### Database & Storage
-- **SQLite**: Reliable, file-based database
-- **Image Storage**: Local file system with caching
-- **Session Storage**: Client-side session management
-- **Cache Management**: Optimized data caching strategies
+- **SQLite**: Reliable, file-based database with automatic migrations
+- **Image Storage**: Local file system with automatic optimization and caching
+- **Session Storage**: Client-side session management with JWT tokens
+- **Cache Management**: Multi-level caching (browser, API, database)
+- **Database Migrations**: Automatic schema updates and versioning
+- **Backup System**: Automated database backups and recovery
 
 ### Development Tools
-- **ESLint**: Code quality and consistency
-- **Prettier**: Code formatting
-- **Jest**: Testing framework
-- **TypeScript Compiler**: Type checking and compilation
+- **ESLint**: Code quality and consistency with custom rules
+- **Prettier**: Code formatting with project-specific configuration
+- **Jest**: Testing framework with coverage reporting
+- **TypeScript Compiler**: Type checking and compilation with strict mode
+- **Nodemon**: Auto-restart backend on file changes
+- **Concurrently**: Run multiple commands simultaneously
+- **Cross-env**: Cross-platform environment variable setting
 
 ## 📦 Installation & Setup
 
@@ -154,18 +159,55 @@ npm run dev
 - Backend: `http://localhost:3001`
 - Frontend: `http://localhost:3000`
 
+### Available Scripts
+
+```bash
+# Root level scripts
+npm run dev:backend    # Start backend in development mode
+npm run dev:frontend   # Start frontend in development mode
+npm run build          # Build both frontend and backend
+npm run start          # Start production servers
+npm run test           # Run all tests
+npm run lint           # Run ESLint on all files
+
+# Backend scripts
+cd backend
+npm run dev            # Start with nodemon for auto-reload
+npm run build          # Compile TypeScript to JavaScript
+npm run start          # Start production server
+npm run test           # Run backend tests
+
+# Frontend scripts
+cd frontend
+npm run dev            # Start Next.js development server
+npm run build          # Build for production
+npm run start          # Start production server
+npm run lint           # Run ESLint
+npm run type-check     # Run TypeScript type checking
+```
+
 ## 🗄️ Database Schema
 
 The platform uses a comprehensive database schema including:
 
 ### Core Tables
-- **Users**: Customer accounts and admin users
-- **Products**: Product catalog with images and metadata
-- **Categories**: Product categorization system
-- **Suppliers**: Supplier information and management
-- **Orders**: Complete order management system
-- **Order Items**: Individual items within orders
-- **Addresses**: Customer shipping and billing addresses
+- **Users**: Customer accounts and admin users with role-based permissions
+- **Products**: Product catalog with images, metadata, and inventory tracking
+- **Categories**: Product categorization system with hierarchical structure
+- **Suppliers**: Supplier information and management with contact details
+- **Orders**: Complete order management system with status tracking
+- **Order Items**: Individual items within orders with pricing history
+- **Addresses**: Customer shipping and billing addresses with validation
+- **Reviews**: Product reviews with ratings, images, and moderation
+- **Wishlists**: Customer wishlist management
+- **Cart Items**: Shopping cart persistence across sessions
+
+### Database Features
+- **Foreign Key Constraints**: Data integrity and referential integrity
+- **Indexes**: Optimized query performance on frequently accessed columns
+- **Triggers**: Automated data updates and audit trails
+- **Views**: Complex query abstractions for reporting
+- **Transactions**: ACID compliance for critical operations
 
 ### Marketing & Analytics
 - **Email Campaigns**: Marketing campaign management
@@ -264,24 +306,33 @@ CORS_ORIGIN=http://localhost:3000
 
 ## 🔒 Security Features
 
-- **JWT Authentication**: Secure token-based authentication
-- **Password Hashing**: bcrypt password encryption
-- **Rate Limiting**: API protection against abuse
-- **CORS Protection**: Cross-origin request security
-- **Input Validation**: Comprehensive data validation
-- **SQL Injection Prevention**: Parameterized queries
-- **XSS Protection**: Content Security Policy headers
-- **CSRF Protection**: Cross-site request forgery prevention
+- **JWT Authentication**: Secure token-based authentication with refresh tokens
+- **Password Hashing**: bcrypt password encryption with salt rounds
+- **Rate Limiting**: API protection against abuse with configurable limits
+- **CORS Protection**: Cross-origin request security with whitelist
+- **Input Validation**: Comprehensive data validation with sanitization
+- **SQL Injection Prevention**: Parameterized queries and ORM usage
+- **XSS Protection**: Content Security Policy headers and output encoding
+- **CSRF Protection**: Cross-site request forgery prevention with tokens
+- **Helmet.js**: Security headers for Express.js
+- **Environment Variable Protection**: Secure configuration management
+- **Session Management**: Secure session handling with expiration
+- **Audit Logging**: Security event tracking and monitoring
 
 ## 📊 Performance Features
 
-- **Image Optimization**: Automatic image compression and optimization
-- **Lazy Loading**: On-demand content loading
-- **Code Splitting**: Automatic bundle optimization
-- **Caching Strategies**: Multi-level caching system
-- **Database Indexing**: Optimized query performance
-- **CDN Ready**: Static asset optimization
-- **SEO Optimization**: Meta tags, structured data, and sitemaps
+- **Image Optimization**: Automatic image compression, WebP conversion, and responsive sizing
+- **Lazy Loading**: On-demand content loading with intersection observer
+- **Code Splitting**: Automatic bundle optimization with dynamic imports
+- **Caching Strategies**: Multi-level caching (browser, CDN, API, database)
+- **Database Indexing**: Optimized query performance with composite indexes
+- **CDN Ready**: Static asset optimization with cache headers
+- **SEO Optimization**: Meta tags, structured data, sitemaps, and Open Graph
+- **Bundle Analysis**: Webpack bundle analyzer for optimization
+- **Tree Shaking**: Dead code elimination for smaller bundles
+- **Service Worker**: Offline functionality and caching
+- **HTTP/2 Support**: Multiplexed connections for faster loading
+- **Gzip Compression**: Response compression for reduced bandwidth
 
 ## 🚀 Deployment
 
@@ -316,6 +367,18 @@ cd backend
 4. Configure payment processors
 5. Set up monitoring and logging
 
+### Production Checklist
+- [ ] Environment variables configured
+- [ ] Database migrations run
+- [ ] SSL certificates installed
+- [ ] Domain and DNS configured
+- [ ] CDN setup for static assets
+- [ ] Monitoring and error tracking
+- [ ] Backup strategy implemented
+- [ ] Performance monitoring enabled
+- [ ] Security headers configured
+- [ ] Rate limiting enabled
+
 ## 🤝 Contributing
 
 We welcome contributions! Please follow these steps:
@@ -344,6 +407,46 @@ For support and questions:
 - **Documentation**: Check the inline code comments and API documentation
 - **Issues**: Open an issue in the GitHub repository
 - **Email**: Contact the development team directly
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**Backend won't start**
+```bash
+# Check if port 3001 is in use
+lsof -ti :3001 | xargs kill -9
+# Rebuild backend
+cd backend && npm run build
+```
+
+**Frontend build errors**
+```bash
+# Clear Next.js cache
+cd frontend && rm -rf .next
+# Reinstall dependencies
+npm install
+```
+
+**Database issues**
+```bash
+# Check database file permissions
+ls -la database.sqlite
+# Reset database (WARNING: loses data)
+rm database.sqlite && npm run setup:db
+```
+
+**Rate limiting errors**
+- Wait 1-2 minutes for rate limits to reset
+- Check if multiple instances are running
+- Review API usage patterns
+
+### Performance Optimization
+- Enable gzip compression
+- Optimize images before upload
+- Use CDN for static assets
+- Monitor database query performance
+- Implement proper caching strategies
 
 ## 🎉 Acknowledgments
 
