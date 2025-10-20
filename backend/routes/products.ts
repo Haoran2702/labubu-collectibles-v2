@@ -174,10 +174,14 @@ async function trackStockMovement(db: any, productId: number, quantity: number, 
     newStock = previousStock + quantity;
   }
   
+  // Ensure we have valid values
+  const finalPreviousStock = previousStock ?? 0;
+  const finalNewStock = newStock ?? finalPreviousStock + quantity;
+  
   await db.run(`
     INSERT INTO stock_movements (productId, quantity, movementType, reason, orderId, userId, previousStock, newStock)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  `, [productId, quantity, movementType, reason, orderId, userId, previousStock, newStock]);
+  `, [productId, quantity, movementType, reason, orderId, userId, finalPreviousStock, finalNewStock]);
 }
 
 // Helper function to check and send low stock alerts
