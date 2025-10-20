@@ -89,7 +89,10 @@ export default function AdminProducts() {
         body: JSON.stringify({ operation, stock: amount }),
       });
       
-      if (!res.ok) throw new Error("Failed to update stock");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || `Failed to update stock: ${res.status}`);
+      }
       
       const updatedProduct = await res.json();
       setProducts(prev => prev.map(p => p.id === productId ? updatedProduct : p));
@@ -100,10 +103,11 @@ export default function AdminProducts() {
         message: `Stock ${operation}d by ${amount}`
       });
     } catch (err: any) {
+      console.error('Stock update error:', err);
       addToast({
         type: 'error',
         title: 'Update Failed',
-        message: err.message
+        message: err.message || 'Failed to update stock'
       });
     } finally {
       setUpdatingStock(null);

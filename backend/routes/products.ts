@@ -165,12 +165,14 @@ router.put('/:id', requireAuth, expressAsyncHandler(async (req, res, next) => {
 }));
 
 // Helper function to track stock movements
-async function trackStockMovement(db: any, productId: number, quantity: number, movementType: string, reason: string, orderId?: string, userId?: number) {
-  const product = await db.get('SELECT stock FROM products WHERE id = ?', productId);
-  if (!product) return;
-  
-  const previousStock = product.stock;
-  const newStock = previousStock + quantity; // quantity can be negative for decreases
+async function trackStockMovement(db: any, productId: number, quantity: number, movementType: string, reason: string, orderId?: string, userId?: number, previousStock?: number, newStock?: number) {
+  // Use provided values or fetch from database
+  if (previousStock === undefined || newStock === undefined) {
+    const product = await db.get('SELECT stock FROM products WHERE id = ?', productId);
+    if (!product) return;
+    previousStock = product.stock;
+    newStock = previousStock + quantity;
+  }
   
   await db.run(`
     INSERT INTO stock_movements (productId, quantity, movementType, reason, orderId, userId, previousStock, newStock)
@@ -223,19 +225,21 @@ router.put('/:id/stock', requireAuth, expressAsyncHandler(async (req, res, next)
     return next(new NotFoundError('Product not found'));
   }
   
+  const previousStock = existing.stock;
   let newStock;
   let quantityChange = 0;
   
   if (operation === 'increase') {
     quantityChange = stock || 1;
-    newStock = existing.stock + quantityChange;
+    newStock = previousStock + quantityChange;
   } else if (operation === 'decrease') {
-    quantityChange = -(stock || 1);
-    newStock = Math.max(0, existing.stock + quantityChange);
+    const decreaseAmount = stock || 1;
+    quantityChange = -decreaseAmount;
+    newStock = Math.max(0, previousStock - decreaseAmount);
   } else {
     // operation === 'set' or no operation specified
     newStock = stock;
-    quantityChange = newStock - existing.stock;
+    quantityChange = newStock - previousStock;
   }
   
   if (newStock < 0) {
@@ -243,14 +247,15 @@ router.put('/:id/stock', requireAuth, expressAsyncHandler(async (req, res, next)
     return next(new BadRequestError('Stock cannot be negative'));
   }
   
+  // Update the product stock
   await db.run(
     'UPDATE products SET stock = ?, updatedAt = CURRENT_TIMESTAMP WHERE id = ?',
     newStock,
     req.params.id
   );
   
-  // Track the stock movement
-  await trackStockMovement(db, existing.id, quantityChange, 'manual_update', reason, undefined, (req as any).user?.id);
+  // Track the stock movement with correct values
+  await trackStockMovement(db, existing.id, quantityChange, 'manual_update', reason, undefined, (req as any).user?.id, previousStock, newStock);
   
   // Check for low stock alerts
   await checkLowStockAlerts(db, existing.id, newStock);
