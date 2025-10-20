@@ -187,31 +187,71 @@ async function trackStockMovement(db: any, productId: number, quantity: number, 
 }
 
 // Helper function to check and send low stock alerts
-async function checkLowStockAlerts(db: any, productId: number, newStock: number) {
-  const LOW_STOCK_THRESHOLD = 5; // Alert when stock goes below 5
+async function checkLowStockAlerts(db: any, productId: number, newStock: number, previousStock: number) {
+  // Only send alerts when crossing thresholds downward (stock decreasing)
+  if (newStock >= previousStock) return;
   
-  if (newStock <= LOW_STOCK_THRESHOLD) {
-    const product = await db.get('SELECT name, stock FROM products WHERE id = ?', productId);
-    if (product) {
-      // Get admin users to notify
-      const admins = await db.all('SELECT email, firstName FROM users WHERE role = ?', ['admin']);
-      
-      for (const admin of admins) {
-        try {
-          const html = `
-            <h2>Low Stock Alert</h2>
-            <p>Product: <strong>${product.name}</strong></p>
-            <p>Current Stock: <strong>${product.stock}</strong></p>
-            <p>This product is running low on stock and may need to be restocked soon.</p>
-            <p>Please check the admin panel to update inventory.</p>
-          `;
-          
-          await sendEmail(admin.email, 'Low Stock Alert - Labubu Collectibles', html);
-          console.log(`Low stock alert sent to ${admin.email} for product ${product.name}`);
-        } catch (error) {
-          console.error(`Failed to send low stock alert to ${admin.email}:`, error);
-        }
-      }
+  const product = await db.get('SELECT name FROM products WHERE id = ?', productId);
+  if (!product) return;
+  
+  let shouldAlert = false;
+  let alertType = '';
+  let alertTitle = '';
+  let alertMessage = '';
+  
+  // Check for specific threshold crossings (downward only)
+  if (previousStock > 10 && newStock <= 10) {
+    // Crossed from 11+ to 10 or below
+    shouldAlert = true;
+    alertType = 'MEDIUM';
+    alertTitle = '📦 Low Stock Alert - Labubu Collectibles';
+    alertMessage = `
+      <h2 style="color: #d97706;">📦 Low Stock Alert</h2>
+      <p><strong>Product:</strong> ${product.name}</p>
+      <p><strong>Current Stock:</strong> <span style="color: #d97706; font-weight: bold;">${newStock}</span></p>
+      <p style="color: #d97706;">This product has dropped below 10 units. Consider restocking soon.</p>
+      <p>Please check the admin panel to update inventory when convenient.</p>
+    `;
+  } else if (previousStock > 3 && newStock <= 3) {
+    // Crossed from 4+ to 3 or below
+    shouldAlert = true;
+    alertType = 'HIGH';
+    alertTitle = '⚠️ Very Low Stock - Labubu Collectibles';
+    alertMessage = `
+      <h2 style="color: #ea580c;">⚠️ Very Low Stock Alert</h2>
+      <p><strong>Product:</strong> ${product.name}</p>
+      <p><strong>Current Stock:</strong> <span style="color: #ea580c; font-weight: bold;">${newStock}</span></p>
+      <p style="color: #ea580c;">This product has dropped below 3 units and should be restocked soon.</p>
+      <p>Please check the admin panel to update inventory.</p>
+    `;
+  } else if (previousStock > 0 && newStock === 0) {
+    // Crossed from 1+ to 0
+    shouldAlert = true;
+    alertType = 'CRITICAL';
+    alertTitle = '🚨 OUT OF STOCK - Labubu Collectibles';
+    alertMessage = `
+      <h2 style="color: #dc2626;">🚨 CRITICAL: Product Out of Stock</h2>
+      <p><strong>Product:</strong> ${product.name}</p>
+      <p><strong>Current Stock:</strong> <span style="color: #dc2626; font-weight: bold;">0</span></p>
+      <p style="color: #dc2626; font-weight: bold;">This product is completely out of stock and needs immediate restocking!</p>
+      <p>Please update inventory in the admin panel as soon as possible.</p>
+    `;
+  }
+  
+  // Send alerts asynchronously (don't wait for email sending)
+  if (shouldAlert) {
+    // Get admin users to notify
+    const admins = await db.all('SELECT email, firstName FROM users WHERE role = ?', ['admin']);
+    
+    // Send emails in background (don't await)
+    for (const admin of admins) {
+      sendEmail(admin.email, alertTitle, alertMessage)
+        .then(() => {
+          console.log(`${alertType} stock alert sent to ${admin.email} for product ${product.name} (${previousStock} → ${newStock})`);
+        })
+        .catch((error) => {
+          console.error(`Failed to send ${alertType} stock alert to ${admin.email}:`, error);
+        });
     }
   }
 }
@@ -264,7 +304,7 @@ router.put('/:id/stock', requireAuth, expressAsyncHandler(async (req, res, next)
   await trackStockMovement(db, existing.id, quantityChange, 'manual_update', reason, undefined, (req as any).user?.id, previousStock, newStock);
   
   // Check for low stock alerts
-  await checkLowStockAlerts(db, existing.id, newStock);
+  await checkLowStockAlerts(db, existing.id, newStock, previousStock);
   
   const updated = await db.get('SELECT * FROM products WHERE id = ?', req.params.id);
   await db.close();
