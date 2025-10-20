@@ -1,5 +1,8 @@
 // API Configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 
+  (process.env.NODE_ENV === 'production' 
+    ? 'https://labubu-collectibles-v2-production.up.railway.app' 
+    : 'http://localhost:3001');
 
 export const apiConfig = {
   baseUrl: API_BASE_URL,

@@ -24,6 +24,11 @@ const nextConfig: NextConfig = {
   async rewrites() {
     let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
     
+    // Production API URL fallback
+    if (process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_API_URL) {
+      apiUrl = 'https://labubu-collectibles-v2-production.up.railway.app';
+    }
+    
     // Ensure the URL has a protocol
     if (apiUrl && !apiUrl.startsWith('http://') && !apiUrl.startsWith('https://')) {
       apiUrl = `https://${apiUrl}`;
